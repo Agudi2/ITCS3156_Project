@@ -34,4 +34,27 @@ plt.title("Correlation Matrix")
 plt.show()
 
 #%%
+# Seasonality and Regional Trends
+data['Transaction_Date'] = pd.to_datetime(data['Transaction_Date'])
+
+data['Year'] = data['Transaction_Date'].dt.year
+data['Month'] = data['Transaction_Date'].dt.month
+
+# Revenue trends by month
+monthly_revenue = data.groupby(['Year', 'Month'])['Revenue'].sum().reset_index()
+plt.figure(figsize=(10, 6))
+sns.lineplot(x='Month', y='Revenue', hue='Year', data=monthly_revenue, marker='o')
+plt.title("Revenue Trends Over the Months")
+plt.xlabel("Month")
+plt.ylabel("Total Revenue")
+plt.show()
+
+# Total revenue by region
+region_revenue = data.groupby('Region')['Revenue'].sum().reset_index()
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Region', y='Revenue', data=region_revenue, palette='wistia')
+plt.title("Total Revenue Across Regions")
+plt.xticks(rotation=45)
+plt.ylabel("Total Revenue")
+plt.show()
 
